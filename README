@@ -13,21 +13,21 @@ Scheduling jobs:
 
 SheepCron.do |job|
 	job.schedule :every => 1.day, :at => '12:00'
-	job.run Sheep.graze
+	job.run 'Sheep.graze'
 end
 
 # a little more complete job featuring name and exceptions
 SheepCron.do |job|
-	job.name "Work"
+	job.name 'Work'
 	job.schedule :every => 1.day, :at => '9am', :except => { |t| t.saturday? || t.sunday? }
-	job.run Sheep.work
+	job.run 'Sheep.work'
 end
 
 # jobs can have multiple schedules too
 SheepCron.do |job|
 	job.schedule :every => 1.week, :at => 'friday, 9pm'
 	job.schedule :every => 1.year, :at => '25/12'
-	job.run Sheep.party!
+	job.run 'Sheep.party!'
 end
 
 == CONFIGURATION:
