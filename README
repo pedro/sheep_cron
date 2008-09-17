@@ -11,30 +11,28 @@ Sheep Cron, to be confused with "Cheap Cron", is a poor man's cron. It's a pure 
 
 Scheduling jobs:
 
-SheepCron.do |job|
+SheepCron do |job|
 	job.schedule :every => 1.day, :at => '12:00'
-	job.run 'Sheep.graze'
+	job.run lambda { Sheep.graze }
 end
 
 # a little more complete job featuring name and exceptions
-SheepCron.do |job|
+SheepCron do |job|
 	job.name 'Work'
 	job.schedule :every => 1.day, :at => '9am', :except => { |t| t.saturday? || t.sunday? }
-	job.run 'Sheep.work'
+	job.run lambda { Sheep.work }
 end
 
 # jobs can have multiple schedules too
-SheepCron.do |job|
+SheepCron do |job|
 	job.schedule :every => 1.week, :at => 'friday, 9pm'
 	job.schedule :every => 1.year, :at => '25/12'
-	job.run 'Sheep.party!'
+	job.run lambda { Sheep.party! }
 end
 
 == CONFIGURATION:
 
 SheepCron.configure do |jobs|
-	jobs.launcher = :rails    # will run jobs via script/runner
-	jobs.launcher = :custom, :includes => ['activerecord', 'app/sheep.rb']
 	jobs.timeout 60.seconds
 end
 
