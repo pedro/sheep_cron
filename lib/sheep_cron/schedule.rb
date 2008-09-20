@@ -39,7 +39,7 @@ class SheepCron::Schedule
   def complete(at, date)
     at = at.gsub(/\.|,/, '') if at
     at = complete_time(at, date)
-    at = complete_day(at, date) if interval >= 1.week
+    at = complete_day(at, date)
     at = complete_month(at, date) if interval >= 1.month
     return at
   end
