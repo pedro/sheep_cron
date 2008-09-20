@@ -10,8 +10,8 @@ class SheepCron::Schedule
 
     if @interval < 1.day
       # dealing with a bug in chronic that will add a day even when
-      # the time is still available today (ie it's 1:00:00, we ask chronic
-      # to parse "1:00:10" and it will add one day)
+      # the time is still available today (ie it's a monday 1:00pm, we 
+      # ask chronic to parse "1:01pm" and it returns tue 1:01pm)
       @next_execution = Time.now
     else
       @next_execution = Chronic.parse(complete(@at, Time.now), :context => :future)
