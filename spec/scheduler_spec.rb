@@ -10,8 +10,8 @@ describe SheepCron::Scheduler do
   end
 
   it "works :)" do
-    SheepCron::Scheduler.schedule(@job, :every => 1.seconds)
-    sleep(3.2)
+    SheepCron::Scheduler.schedule(@job, :every => 1.second)
+    sleep(3.1)
     SheepCron::Scheduler.stop
     out = File.readlines(@file)
     out.size.should == 3
