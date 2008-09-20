@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'activesupport'
+require 'chronic'
 
 module SheepCron; end
 require File.dirname(__FILE__) + '/sheep_cron/job'

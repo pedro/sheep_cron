@@ -5,7 +5,7 @@ class SheepCron::Scheduler
     end
 
     def schedule(job, options)
-      Schedule.new(job, options)
+      SheepCron::Schedule.new(job, options)
     end
   end
 end
