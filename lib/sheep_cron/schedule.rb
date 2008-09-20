@@ -8,7 +8,14 @@ class SheepCron::Schedule
     @at = options[:at]
     @exception = options[:except]
 
-    @next_execution = Chronic.parse(complete(@at, Time.now), :context => :future)
+    if @interval < 1.day
+      # dealing with a bug in chronic that will add a day even when
+      # the time is still available today (ie it's 1:00:00, we ask chronic
+      # to parse "1:00:10" and it will add one day)
+      @next_execution = Time.now
+    else
+      @next_execution = Chronic.parse(complete(@at, Time.now), :context => :future)
+    end
     schedule_next_execution
     @prev_execution = nil
   end
@@ -46,7 +53,7 @@ class SheepCron::Schedule
 
   def complete_time(at, date)
     return at if at =~ /am|pm|\d:\d\d/i
-    now = date.strftime("%H:%M")
+    now = date.strftime("%H:%M:%S")
     if at.nil? || at.strip.empty?
       now
     else
@@ -68,5 +75,9 @@ class SheepCron::Schedule
     month = months[date.month - 1]
     return at if months.any? { |m| at =~ /#{m}/i }
     "#{month} #{at}"
+  end
+
+  def waiting_time
+    next_execution - Time.now
   end
 end

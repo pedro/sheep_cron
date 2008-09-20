@@ -59,7 +59,7 @@ describe SheepCron::Schedule do
   end
 
   context "simulation" do
-    it "rescheduling with time" do
+    it "rescheduling with minutes" do
       @schedule = SheepCron::Schedule.new(@job, :every => 50.minutes)
       @schedule.next_execution.should == Time.mktime(2008, 1, 7, 12, 50, 00)
       @schedule.schedule_next_execution

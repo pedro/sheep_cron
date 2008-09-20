@@ -1,6 +1,11 @@
 require File.dirname(__FILE__) + '/base'
 
 describe SheepCron do
+  before do
+    # avoid running the scheduler fork here
+    SheepCron::Scheduler.stub!(:ensure_covered)
+  end
+
   it "is just an accessor to easily create jobs" do
     SheepCron do |j|
       j.name = 'test'
