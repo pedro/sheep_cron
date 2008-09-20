@@ -27,8 +27,8 @@ class SheepCron::Scheduler
       @@pid = fork do
         loop do
           sleep schedule.waiting_time
-          schedule.job.run
           schedule.schedule_next_execution
+          schedule.job.run
         end
       end
     end
