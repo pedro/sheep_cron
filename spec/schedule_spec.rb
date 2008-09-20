@@ -53,6 +53,11 @@ describe SheepCron::Schedule do
     end
   end
 
+  it "skips exceptions" do
+    @schedule = SheepCron::Schedule.new(@job, :every => 10.minutes, :except => lambda { |t| t.month == 1 })
+    @schedule.next_execution.should == Time.mktime(2008, 2, 1, 00, 00, 00)
+  end
+
   context "simulation" do
     it "rescheduling with time" do
       @schedule = SheepCron::Schedule.new(@job, :every => 50.minutes)

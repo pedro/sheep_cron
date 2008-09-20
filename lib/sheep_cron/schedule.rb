@@ -1,12 +1,12 @@
 class SheepCron::Schedule
-  attr_accessor :job, :interval, :at, :exceptions, :next_execution, :prev_execution
+  attr_accessor :job, :interval, :at, :exception, :next_execution, :prev_execution
 
   def initialize(job, options)
     @job = job
 
     @interval = options[:every]
     @at = options[:at]
-    @exceptions = options[:exceptions]
+    @exception = options[:except]
 
     @next_execution = Chronic.parse(complete(@at, Time.now), :context => :future)
     schedule_next_execution
@@ -15,14 +15,20 @@ class SheepCron::Schedule
 
   def schedule_next_execution
     self.prev_execution = next_execution
-    self.next_execution = prev_execution + interval
+    calculate_next_execution(prev_execution)
+    calculate_next_execution(next_execution) while !allowed?
+  end
+
+  def calculate_next_execution(starting_at)
+    self.next_execution = starting_at + interval
     if interval >= 1.month
       self.next_execution = Chronic.parse(base_reference, :now => self.next_execution, :context => :future)
     end
   end
 
   def allowed?
-    exceptions.all? { |e| !e.call(@next_execution) }
+    return true if exception.nil?
+    !exception.call(next_execution)
   end
 
   def base_reference
