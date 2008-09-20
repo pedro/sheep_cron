@@ -40,21 +40,19 @@ class SheepCron::Schedule
 
   def complete_time(at, date)
     return at if at =~ /am|pm|\d:\d\d/i
+    now = date.strftime("%H:%M")
     if at.nil? || at.strip.empty?
-      "12:00"
+      now
     else
-      "#{at} 12:00"
+      "#{at} #{now}"
     end
   end
 
   def complete_day(at, date)
-    weekdays = %w( mon tue wed thu fri sat sun )
-    return at if at =~ /^\d+(\,|\s)?/
-    return at if weekdays.any? { |d| at =~ /#{d}/i }
-    if interval < 1.month
-      weekday = weekdays(date.wday - 1)
-      return "#{weekday} #{at}"
-    else
+    return at if interval < 1.month
+    return at if at =~ /^\d+$/ || at =~ /^\d+\s/
+    return at if %w( mon tue wed thu fri sat sun ).any? { |d| at =~ /#{d}/i }
+    if interval >= 1.month
       return "#{date.day} #{at}"
     end
   end
