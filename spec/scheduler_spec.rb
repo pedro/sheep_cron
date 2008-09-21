@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/base'
 describe SheepCron::Scheduler do
   before do
     @file = '/tmp/sheep_cron_spec'
-    File.delete(@file)
+    File.delete(@file) rescue nil
     @job = SheepCron::Job.new(SheepCron::Scheduler)
     @job.name = 'test'
     @job.run lambda { File.open(@file, 'a') { |f| f.write Time.now.to_s + "\n" } }
