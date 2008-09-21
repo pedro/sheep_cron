@@ -43,4 +43,4 @@ gem install sheep_cron
 == I CAN HAS PATCHES?:
 
 * Cron "bridge": accept a crontab to define schedules
-* More job storage backends
+* Schedule storage backend
