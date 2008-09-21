@@ -22,6 +22,7 @@ class SheepCron::Scheduler
 
     def stop
       pids.each { |pid| Process.kill('HUP', pid) }
+      pids.clear
     end
 
     def pids
