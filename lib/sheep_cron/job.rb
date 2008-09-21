@@ -1,8 +1,9 @@
 class SheepCron::Job
   attr_accessor :name, :proc, :schedules
 
-  def initialize
+  def initialize(attrs={})
     @schedules = []
+    attrs.each { |a, v| send("#{a}=", v) }
   end
 
   # accessor: if called with param will store 
