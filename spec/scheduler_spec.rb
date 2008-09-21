@@ -4,7 +4,7 @@ describe SheepCron::Scheduler do
   before(:each) do
     @file = '/tmp/sheep_cron_spec'
     File.delete(@file) rescue nil
-    @job = SheepCron::Job.new(SheepCron::Scheduler)
+    @job = SheepCron::Job.new
     @job.run lambda { File.open(@file, 'a') { |f| f.write Time.now.to_s + "\n" } }
   end
 
@@ -35,7 +35,7 @@ describe SheepCron::Scheduler do
 
   it "runs multiple jobs in parallel" do
     @job.run lambda { File.open(@file, 'a') { |f| f.write "1\n" } }
-    @job2 = SheepCron::Job.new(SheepCron::Scheduler)
+    @job2 = SheepCron::Job.new
     @job2.run lambda { File.open(@file, 'a') { |f| f.write "2\n" } }
     SheepCron::Scheduler.schedule(@job,  :every => 1.second, :except => lambda { |t| t.sec % 2 == 0 })
     SheepCron::Scheduler.schedule(@job2, :every => 1.second, :except => lambda { |t| t.sec % 2 == 1 })

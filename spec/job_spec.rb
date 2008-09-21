@@ -2,8 +2,7 @@ require File.dirname(__FILE__) + '/base'
 
 describe SheepCron::Job do
   before do
-    @scheduler = mock('job scheduler')
-    @job = SheepCron::Job.new(@scheduler)
+    @job = SheepCron::Job.new
   end
 
   it "run saves a proc when called with param" do
@@ -18,8 +17,9 @@ describe SheepCron::Job do
     @job.run
   end
 
-  it "delegates the schedule to scheduler" do
-    @scheduler.should_receive(:schedule).with(@job, { :every => 10.minutes })
+  it "saves schedules so scheduler can process them later" do
     @job.schedule :every => 10.minutes
+    @job.schedule :every => 1.month
+    @job.schedules.should == [{ :every => 10.minutes }, { :every => 1.month }]
   end
 end

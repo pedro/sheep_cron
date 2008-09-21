@@ -1,8 +1,8 @@
 class SheepCron::Job
-  attr_accessor :name, :proc, :scheduler
+  attr_accessor :name, :proc, :schedules
 
-  def initialize(scheduler)
-    @scheduler = scheduler
+  def initialize
+    @schedules = []
   end
 
   # accessor: if called with param will store 
@@ -20,6 +20,6 @@ class SheepCron::Job
   end
 
   def schedule(options)
-    scheduler.schedule(self, options)
+    schedules << options
   end
 end
