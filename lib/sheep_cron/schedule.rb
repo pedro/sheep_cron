@@ -78,6 +78,6 @@ class SheepCron::Schedule
   end
 
   def waiting_time
-    next_execution - Time.now
+    [next_execution - Time.now, 0].max
   end
 end
